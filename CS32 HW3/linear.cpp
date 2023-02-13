@@ -15,7 +15,8 @@ bool anyTrue(const double a[], int n)
 	else {
 		anyTrue(a + 1, n - 1);
 	}
-
+ 
+	return false;
 }
 
 // Return the number of elements in the array for which the
@@ -41,12 +42,20 @@ int firstTrue(const double a[], int n)
 	if (n <= 0) // base case 
 		return -1;
 
-	int index = countTrue(a, n - 1);
+	/*int index = firstTrue(a + 1, n - 1);
 
-	if (somePredicate(a[n - 1])) {
-		index = n - 1;
+	if (somePredicate(a[0])) {
+		index = 0;
 		return index;
-	}
+	}*/
+
+	int index = firstTrue(a, n - 1);
+
+	if (index >= 0)
+		return index;
+
+	if (somePredicate(a[n - 1])) 
+		index = n - 1;
 
 	return index;
 }
@@ -89,19 +98,16 @@ int indexOfMinimum(const double a[], int n)
 //    10 20 20
 bool isIn(const double a1[], int n1, const double a2[], int n2)			// PRETTY SURE THIS DOES NOT WORK
 {
-	if (n1 == 0)
+	if (n1 == 0 && n2 > 0)
 		return true;
 	if (n2 == 0)
 		return false;
 
-	bool temp = false;
-
-	if (a1[0] != a2[0]) {
-		temp = isIn(a1, n1, a2 + 1, n2 - 1);
-	}
-	else {
-		temp = isIn(a1 + 1, n1 - 1, a2, n2);
-	}
-
-	return temp;
+	if (a1[0] == a2[0]) 
+		if (n1 == 1 && n2 == 1) 
+			return true;
+		else
+			return isIn(a1 + 1, n1 - 1, a2 + 1, n2 - 1);
+	else
+		return isIn(a1, n1, a2 + 1, n2 - 1);
 }
